@@ -3,6 +3,7 @@ source ./utils/vals/dbnameval.sh
 
 
 
-function_1 "hassan"
+valDbNames "hassan"
 
-echo $x
+echo $db_name
+echo $flag
