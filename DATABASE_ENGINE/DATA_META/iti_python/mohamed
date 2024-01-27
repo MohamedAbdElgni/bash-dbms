@@ -1,0 +1,2 @@
+id : name : position : debrtment : age
+integer : string : string : integer : integer
