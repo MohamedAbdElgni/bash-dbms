@@ -15,13 +15,16 @@ do
         
         # check if db_name exists
         if [ ! -d "../.db/$db_name" ]; then
+            clear
             mkdir "../.db/$db_name"
-            echo "DataBase $db_name created successfully."
-            # return to main menu
+            echo "DataBase $db_name created successfully." "👍"
+            
             ./run.sh
+            exit 0
             break
         else
-            echo "DataBase $db_name already exists."
+            
+            echo "DataBase--> $db_name already exists." "❌"
             echo "Please try different name."
         fi
     else
