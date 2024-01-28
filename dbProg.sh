@@ -6,7 +6,7 @@ chmod +x main/*.sh 2> ./error.log
 
 
 cd main
-
+clear
 ./run.sh
 
 

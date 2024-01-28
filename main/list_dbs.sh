@@ -3,7 +3,7 @@
 function list_dbs(){
     clear
     echo "=====All Databases====="
-
+# ls-F | grep /
     for db in ../.db/* ; do
     if [ -d "$db" ]; then
         echo ""
