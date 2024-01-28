@@ -1,7 +1,6 @@
 #!/bin/bash
 
 function list_dbs(){
-    # list all databases
     clear
     echo "=====All Databases====="
 
@@ -13,6 +12,15 @@ function list_dbs(){
 
     else
         echo "No Databases found on this device." $'\360\237\222\277'
+        read -p "Do you want to create a new DataBase? (y/n) " choice
+        if [ $choice == "y" ]; then
+            ./create_db.sh
+            exit 0
+        else
+            clear
+            ./run.sh
+            exit 0
+        fi
     fi
 
     done

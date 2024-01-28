@@ -44,7 +44,9 @@ do
         ;;
         # connect database block #
         "Connect-DataBase" )
-            echo "3 selected"
+            
+            . con_db.sh
+            exit 0
         ;;
         # drop database block #
         "Drop-DataBase" )

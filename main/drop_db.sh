@@ -1,17 +1,16 @@
 #!/bin/bash
 
 function drop_db(){
+
     # list all databases
-    # ask user to choose one from the selected list
     
-    # list all databases
     clear
     . list_dbs.sh
 
-
+    # to be added validation later
     while true
     do
-    read -p "Enter DataBase Name: " dd_name
+    read -p "Enter DataBase Name To Be Deleted: " dd_name
         if [ -d "../.db/$dd_name" ]; then
             rm -r "../.db/$dd_name"
             clear
