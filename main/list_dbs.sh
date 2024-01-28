@@ -1,19 +1,14 @@
 #!/bin/bash
 
-function list_dbs(){
-    clear
-    echo "=====All Databases====="
-# ls-F | grep /
-    for db in ../.db/* ; do
-    if [ -d "$db" ]; then
-        echo ""
-            echo $'\360\237\222\276' "${db##*/}" 
-        echo ""
+list_dbs() {
+    
+    dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
-    else
+    # Check if the array is empty
+    if [ ${#dbs[@]} -eq 0 ]; then
         echo "No Databases found on this device." $'\360\237\222\277'
         read -p "Do you want to create a new DataBase? (y/n) " choice
-        if [ $choice == "y" ]; then
+        if [ "$choice" = "y" ]; then
             ./create_db.sh
             exit 0
         else
@@ -23,8 +18,12 @@ function list_dbs(){
         fi
     fi
 
-    done
     
+    for db in "${dbs[@]}" ; do
+        echo ""
+        echo $'\360\237\222\276' "${db}" 
+        echo ""
+    done
 }
 
 list_dbs
