@@ -4,18 +4,13 @@
 
 clear
 
-echo "=====Enter Database Name to Connect to====="
+dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
-    for db in ../.db/* ; do
-    if [ -d "$db" ]; then
-        echo ""
-            echo $'\360\237\222\276' "${db##*/}" 
-        echo ""
-
-    else
+    # Check if the array is empty
+    if [ ${#dbs[@]} -eq 0 ]; then
         echo "No Databases found on this device." $'\360\237\222\277'
         read -p "Do you want to create a new DataBase? (y/n) " choice
-        if [ $choice == "y" ]; then
+        if [ "$choice" = "y" ]; then
             ./create_db.sh
             exit 0
         else
@@ -25,7 +20,12 @@ echo "=====Enter Database Name to Connect to====="
         fi
     fi
 
-done
+    
+    for db in "${dbs[@]}" ; do
+        echo ""
+        echo $'\360\237\222\276' "${db}" 
+        echo ""
+    done
 
 function init_db_con(){
     
@@ -33,7 +33,7 @@ function init_db_con(){
     do
     read -p "Enter DataBase Name: " con_db_name
 
-        # validation to be added 
+        # validation to be added<-----------------
         
         case $con_db_name in
             [A-Za-z_]*[A-Za-z0-9_]* )
@@ -42,8 +42,9 @@ function init_db_con(){
                 
                 if [ -d "../.db/$con_db_name" ]; then
                     clear
-                    echo "DataBase $con_db_name connected successfully." "👍"
-                    #### call c_db_menu.sh ####
+                    
+                    . c_db_menu.sh $con_db_name
+                    exit 0
                     
                 else
                     echo "DataBase--> $con_db_name does not exist." "❌"

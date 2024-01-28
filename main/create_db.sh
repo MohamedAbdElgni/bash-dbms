@@ -24,6 +24,7 @@ do
             else
                 db_name=$(echo "$db_name" | sed 's/ /-/g')  # Replace spaces with hyphens
                 mkdir "../.db/$db_name"
+                clear
                 echo "DataBase $db_name created successfully." "👍"
                 ./run.sh
                 exit 0
