@@ -47,21 +47,7 @@ do
         # list database block #
         "List-DataBase" )
             clear
-            echo "=====All Databases====="
-            
-            for db in ../.db/* ; do
-            if [ -d "$db" ]; then
-                echo ""
-                    echo $'\360\237\222\276' "${db##*/}" 
-                echo ""
-            
-            else
-                echo "No Databases found on this device." $'\360\237\222\277'
-            fi
-            
-            done
-            
-            echo "======================="
+            ./list_dbs.sh
             main
             
         ;;
@@ -71,7 +57,8 @@ do
         ;;
         # drop database block #
         "Drop-DataBase" )
-            echo "4 selected"
+            ./drop_db.sh
+            exit 0
         ;;
         # exit block
         "Exit" )
@@ -88,7 +75,7 @@ do
                 find "$db_directory" -mindepth 1 -delete
                 echo "Database reset successfully."
                 
-                main # restart the script
+                main 
                     
             else
                 echo "Error: Database directory does not exist."
