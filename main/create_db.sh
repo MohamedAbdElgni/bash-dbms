@@ -28,8 +28,8 @@ do
                 mkdir "../.db/$db_name"
                 clear
                 echo "DataBase $db_name created successfully." "👍"
-                ./run.sh $usrcurrentdir
-                exit 0
+                . ./run.sh $usrcurrentdir
+                break
                 
             fi ;;
         *) 

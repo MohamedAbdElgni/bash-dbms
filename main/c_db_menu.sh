@@ -33,17 +33,18 @@ do
         "Create-Table" )
             
             . ../../main/tb_create.sh $currdb $usrcurrentdir
-            return 0
+            break
 
         ;;
         "List-Tables" )
-            echo "List-Tables selected"
+            
             . ../../main/tb_list.sh $currdb $usrcurrentdir
-            return 0
+            break
         ;;
         "Drop-Table" )
-            echo "Drop-Table selected"
-            # call for drop table script to be implemented
+            
+            . ../../main/tb_drop.sh $currdb $usrcurrentdir
+            break
         ;;
         "Insert-Into-Table" )
             echo "Insert-Into-Table selected"
@@ -67,7 +68,7 @@ do
             # redirect to main dir
             cd ../../main
             . run.sh $usrcurrentdir
-            return 0
+            break
         ;;
         
         * )
@@ -78,5 +79,7 @@ done
 }
 
 c_db_menu
+
+return 0
 
 

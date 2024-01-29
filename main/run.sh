@@ -8,6 +8,10 @@ if [ ! -d "../.db" ]; then
 fi
 
 
+if [[ $PWD != *"main" ]]; then
+    cd main
+fi
+
 
 function main(){
 
@@ -26,7 +30,7 @@ do
         # create database block #
         "Create-DataBase" )
             
-            . create_db.sh 
+            . create_db.sh $usrcurrentdir
         
             return 0
 
@@ -53,10 +57,11 @@ do
         # exit block
         "Exit" )
             echo "Exiting script from main menu."
-            
+            echo "Bye!"
+            #echo $usrcurrentdir
             cd "$usrcurrentdir"
             
-            return 0
+            break
         ;;
         # reset database block #
         "Delete all DateBases" )
@@ -86,3 +91,5 @@ done
 }
 
 main
+
+return 0

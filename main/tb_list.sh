@@ -4,7 +4,7 @@ db_name=$1
 clear
  for table in *; do
         if [ -d "${table}" ]; then
-            # add table emoji to the table name
+            
             echo "📄 ${table}"
             echo ""
         else 

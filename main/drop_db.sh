@@ -25,11 +25,14 @@ function drop_db() {
                 continue ;;
             *[a-zA-Z_]*[a-zA-Z_] | [a-zA-Z_]) 
                 if [ -d "../.db/$dd_name" ]; then
-                    rm -r "../.db/$dd_name"
+                    echo $PWD
+                    echo "$dd_name"
+
+                    rm -r "../.db/$dd_name" > /dev/null 2>&1
                     clear
                     echo "DataBase $dd_name deleted successfully." "👍"
-                    ./run.sh $usrcurrentdir
-                    exit 0
+                    . run.sh $usrcurrentdir
+                    break
                 else
                     echo "DataBase--> $dd_name does not exist." "❌"
                     echo "Please try different name."
@@ -66,6 +69,6 @@ list_dbs() {
 
 drop_db
 
-. run.sh $usrcurrentdir
+
 
 return 0
