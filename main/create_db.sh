@@ -1,5 +1,7 @@
 #!/bin/bash
 
+usrcurrentdir=$1
+
 while true
 do
     read -p "Enter DataBase Name: " db_name
@@ -18,16 +20,17 @@ do
             echo "==========================="
             continue ;;
         *[a-zA-Z_]*[a-zA-Z_] | [a-zA-Z_]) 
-            if [ -d "../.db/$db_name" ]; then  # Check for existing directory
-                echo "oh my god, Looks like the DB already exists ❌"
+            if [ -d "../.db/$db_name" ]; then  
+                echo "This DB name already exists ❌"
                 continue
             else
-                db_name=$(echo "$db_name" | sed 's/ /-/g')  # Replace spaces with hyphens
+                db_name=$(echo "$db_name" | sed 's/ /-/g')  
                 mkdir "../.db/$db_name"
                 clear
                 echo "DataBase $db_name created successfully." "👍"
-                ./run.sh
+                ./run.sh $usrcurrentdir
                 exit 0
+                
             fi ;;
         *) 
             echo "Invalid input, write a valid name ❌"
@@ -35,5 +38,7 @@ do
             continue ;;
     esac
 done
+
+return 0
 
 

@@ -1,37 +1,37 @@
 #!/bin/bash
 
 # connect to database
-
+usrcurrentdir=$1
 clear
 
-dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
+list_dbs() {
+    
+    dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
     # Check if the array is empty
-    if [ ${#dbs[@]} -eq 0 ]; then
-        echo "No Databases found on this device." $'\360\237\222\277'
-        read -p "Do you want to create a new DataBase? (y/n) " choice
-        if [ "$choice" = "y" ]; then
-            ./create_db.sh
-            exit 0
-        else
-            clear
-            ./run.sh
-            exit 0
+    for db in ../.db/*; do
+        if [ -d "${db}" ]; then
+            # extract the database name from the path with sed or awk
+            db_name=$(echo "$db" | sed 's/.*\///')
+            echo ""
+            echo $'\360\237\222\276' "$db_name"
+            echo ""
+        else 
+            echo "No databases found" $'\360\237\222\277'
+            break
         fi
-    fi
+    done
 
     
-    for db in "${dbs[@]}" ; do
-        echo ""
-        echo $'\360\237\222\276' "${db}" 
-        echo ""
-    done
+}
+
+list_dbs
 
 function init_db_con(){
     
     while true
     do
-    read -p "Enter DataBase Name: " con_db_name
+    read -p "Enter DataBase Name to connect it: " con_db_name
 
         # validation to be added<-----------------
         
@@ -43,8 +43,8 @@ function init_db_con(){
                 if [ -d "../.db/$con_db_name" ]; then
                     clear
                     
-                    . c_db_menu.sh $con_db_name
-                    exit 0
+                    . c_db_menu.sh $con_db_name $usrcurrentdir
+                    return 0
                     
                 else
                     echo "DataBase--> $con_db_name does not exist." "❌"
@@ -61,6 +61,8 @@ function init_db_con(){
 }
 
 init_db_con
+
+return 0
 
 
 

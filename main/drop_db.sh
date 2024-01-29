@@ -1,10 +1,10 @@
 #!/bin/bash
-
+usrcurrentdir = $1
 function drop_db() {
 
     # List all databases
     clear
-    . list_dbs.sh
+    list_dbs
 
     while true
     do
@@ -28,7 +28,7 @@ function drop_db() {
                     rm -r "../.db/$dd_name"
                     clear
                     echo "DataBase $dd_name deleted successfully." "👍"
-                    ./run.sh
+                    ./run.sh $usrcurrentdir
                     exit 0
                 else
                     echo "DataBase--> $dd_name does not exist." "❌"
@@ -43,4 +43,29 @@ function drop_db() {
     done
 }
 
+list_dbs() {
+    
+    dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
+
+    # Check if the array is empty
+    for db in ../.db/*; do
+        if [ -d "${db}" ]; then
+            # extract the database name from the path with sed or awk
+            db_name=$(echo "$db" | sed 's/.*\///')
+            echo ""
+            echo $'\360\237\222\276' "$db_name"
+            echo ""
+        else 
+            echo "No databases found" $'\360\237\222\277'
+            break
+        fi
+    done
+
+    
+}
+
 drop_db
+
+. run.sh $usrcurrentdir
+
+return 0

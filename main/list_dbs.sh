@@ -1,29 +1,29 @@
 #!/bin/bash
-
+usrcurrentdir=$1
 list_dbs() {
     
     dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
     # Check if the array is empty
-    if [ ${#dbs[@]} -eq 0 ]; then
-        echo "No Databases found on this device." $'\360\237\222\277'
-        read -p "Do you want to create a new DataBase? (y/n) " choice
-        if [ "$choice" = "y" ]; then
-            ./create_db.sh
-            exit 0
-        else
-            clear
-            ./run.sh
-            exit 0
+    for db in ../.db/*; do
+        if [ -d "${db}" ]; then
+            # extract the database name from the path with sed or awk
+            db_name=$(echo "$db" | sed 's/.*\///')
+            echo ""
+            echo $'\360\237\222\276' "$db_name"
+            echo ""
+        else 
+            echo "No databases found" $'\360\237\222\277'
+            break
         fi
-    fi
+    done
 
     
-    for db in "${dbs[@]}" ; do
-        echo ""
-        echo $'\360\237\222\276' "${db}" 
-        echo ""
-    done
 }
 
 list_dbs
+
+. run.sh $usrcurrentdir
+
+return 0
+

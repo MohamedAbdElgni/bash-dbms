@@ -2,7 +2,7 @@
 
 PS3=$'\e[33mPlease enter your choice: \e[0m'
 
-
+usrcurrentdir=$1
 if [ ! -d "../.db" ]; then
     mkdir ../.db
 fi
@@ -26,33 +26,37 @@ do
         # create database block #
         "Create-DataBase" )
             
-            ./create_db.sh 
+            . create_db.sh 
         
-            exit 0
+            return 0
 
         ;;
         # list database block #
         "List-DataBase" )
             clear
-            ./list_dbs.sh
-            main
+            . list_dbs.sh $usrcurrentdir
+            
+            return 0
             
         ;;
         # connect database block #
         "Connect-DataBase" )
             
-            . con_db.sh
-            exit 0
+            . con_db.sh $usrcurrentdir
+            return 0
         ;;
         # drop database block #
         "Drop-DataBase" )
-            ./drop_db.sh
-            exit 0
+            . drop_db.sh $usrcurrentdir
+            return 0
         ;;
         # exit block
         "Exit" )
-            echo "Exiting script."
-            exit 0
+            echo "Exiting script from main menu."
+            
+            cd "$usrcurrentdir"
+            
+            return 0
         ;;
         # reset database block #
         "Delete all DateBases" )

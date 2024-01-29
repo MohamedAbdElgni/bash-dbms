@@ -6,31 +6,40 @@
 ##### and the tables scripts will start with tb_ prefix #####
 ##this var for the selected db name will be passed to c_db_menu.sh as a first argument##
 
+
+
+usrcurrentdir=$2
 currdb=$1
-locdb="../.db/$currdb"
+# if pwd ends with main then we are in the main dir we will cd to .db/$currdb
+if [[ $PWD == *"main" ]]; then
+    cd ../.db/$currdb
+fi
+
+#echo $locdb
+
+function c_db_menu(){
+
+
+
 echo "============================================"
 echo "=        $currdb database connected        ="
 echo "============================================"
 
 PS3=$'\e[33mPlease enter your choice: \e[0m'
-
-
-
-
-#echo $locdb
-
-function c_db_menu(){
-select choice in "Create-Table" "List-Tables" "Drop-Table" "Insert-Into-Table" "Select-From-Table" "Delete-From-Table" "Update-Table" "Back-to-Main-menu" "Exit"
+select choice in "Create-Table" "List-Tables" "Drop-Table" "Insert-Into-Table" "Select-From-Table" "Delete-From-Table" "Update-Table" "Back-to-Main-menu"
 
 do
     case $choice in
         "Create-Table" )
-            echo "Create-Table selected"
-            # call for create table script to be implemented
+            
+            . ../../main/tb_create.sh $currdb $usrcurrentdir
+            return 0
+
         ;;
         "List-Tables" )
             echo "List-Tables selected"
-            # call for list tables script to be implemented
+            . ../../main/tb_list.sh $currdb $usrcurrentdir
+            return 0
         ;;
         "Drop-Table" )
             echo "Drop-Table selected"
@@ -55,13 +64,12 @@ do
         "Back-to-Main-menu" )
             echo "Back-to-Main menu "
             clear
-            ./run.sh
-            exit 0
+            # redirect to main dir
+            cd ../../main
+            . run.sh $usrcurrentdir
+            return 0
         ;;
-        "Exit" )
-            echo "Exiting script."
-            exit 0
-        ;;
+        
         * )
             echo "Invalid option $REPLY"
         ;;
@@ -70,4 +78,5 @@ done
 }
 
 c_db_menu
+
 
