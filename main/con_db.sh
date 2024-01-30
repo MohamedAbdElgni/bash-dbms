@@ -1,7 +1,8 @@
 #!/bin/bash
-
+shopt -s extglob
 # connect to database
 usrcurrentdir=$1
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 clear
 
 list_dbs() {

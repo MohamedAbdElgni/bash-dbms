@@ -1,5 +1,7 @@
 #!/bin/bash
+shopt -s extglob
 usrcurrentdir=$2
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 db_name=$1
 clear
  for table in *; do

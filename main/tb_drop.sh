@@ -1,6 +1,8 @@
 #!/bin/bash
+shopt -s extglob
 db_name=$1
 usrcurrentdir=$2
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 echo "===============$db_name DataBase==============="
 clear
  for table in *; do

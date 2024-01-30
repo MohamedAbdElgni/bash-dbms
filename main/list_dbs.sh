@@ -1,5 +1,7 @@
 #!/bin/bash
+shopt -s extglob
 usrcurrentdir=$1
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 list_dbs() {
     
     dbs=( $(ls -F ../.db | grep "/" | tr / " ") )

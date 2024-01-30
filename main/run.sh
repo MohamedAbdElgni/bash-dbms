@@ -1,8 +1,9 @@
 #!/bin/bash
-
+shopt -s extglob
 PS3=$'\e[33mPlease enter your choice: \e[0m'
 
 usrcurrentdir=$1
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 if [ ! -d "../.db" ]; then
     mkdir ../.db
 fi

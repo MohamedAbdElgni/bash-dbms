@@ -1,7 +1,7 @@
 #!/bin/bash
-
+shopt -s extglob
 usrcurrentdir=$1
-
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 while true
 do
     read -p "Enter DataBase Name: " db_name

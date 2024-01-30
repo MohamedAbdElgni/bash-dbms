@@ -1,7 +1,8 @@
 #!/bin/bash
+shopt -s extglob
 usrcurrentdir=$2
 db_name=$1
-
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 # col names will be stored in an array with its colnames and data types and pk or not
 # each table will have 1 pk only
 # three lines will be added to the table file
@@ -228,7 +229,9 @@ function create_table(){
                     echo "Table $table_name created successfully." "👍"
                     echo "=================$db_name-DataBase================="
                     #echo `cat "$table_name/meta"`
-                    break
+
+                    return 0
+                    
 
 
 

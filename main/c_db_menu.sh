@@ -1,4 +1,6 @@
 #!/bin/bash
+shopt -s extglob
+
 ##### important notes #####
 ##### all the scripts related with the secound menu will start with c_db_ prefix #####
 ##### c_ for connect ##### <----------=-=-=-
@@ -10,6 +12,8 @@
 
 usrcurrentdir=$2
 currdb=$1
+
+trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 # if pwd ends with main then we are in the main dir we will cd to .db/$currdb
 if [[ $PWD == *"main" ]]; then
     cd ../.db/$currdb
@@ -47,8 +51,8 @@ do
             break
         ;;
         "Insert-Into-Table" )
-            echo "Insert-Into-Table selected"
-            # call for insert into table script to be implemented
+            . ../../main/tb_insert.sh $currdb $usrcurrentdir
+            break
         ;;
         "Select-From-Table" )
             echo "Select-From-Table selected"
