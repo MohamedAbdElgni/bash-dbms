@@ -6,7 +6,7 @@ trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 clear
 
 list_dbs() {
-    
+    emptyflag=false
     dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
     # Check if the array is empty
@@ -19,7 +19,10 @@ list_dbs() {
             echo ""
         else 
             echo "No databases found" $'\360\237\222\277'
-            break
+            emptyflag=true
+            
+                return 0
+            
         fi
     done
 
@@ -29,6 +32,12 @@ list_dbs() {
 list_dbs
 
 function init_db_con(){
+
+    if [ ! -d "../.db" ]; then
+        
+        . run.sh $usrcurrentdir
+        return 0
+    fi
     
     while true
     do
@@ -61,7 +70,14 @@ function init_db_con(){
 
 }
 
-init_db_con
+clear
+list_dbs
+if [ "$emptyflag" = true ]; then
+    . run.sh $usrcurrentdir
+    return 0
+else
+    init_db_con
+fi
 
 return 0
 

@@ -5,13 +5,17 @@ usrcurrentdir=$2
 trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 echo "===============$db_name DataBase==============="
 clear
+emptyflag=false
+tables_arr=()
  for table in *; do
         if [ -d "${table}" ]; then
             
             echo "📄 ${table}"
             echo ""
+            tables_arr+=($table)
         else 
             echo "No tables found"
+            emptyflag=true
             break
         fi
 
@@ -57,8 +61,12 @@ function drop_table() {
         esac
     done
 }
-
-drop_table
+# if tables array is empty
+if [ "$emptyflag" = true ]; then
+    . ../../main/c_db_menu.sh $db_name $usrcurrentdir
+    return 0
+else
+    drop_table
 . ../../main/c_db_menu.sh $db_name $usrcurrentdir
+fi
 
-return 0

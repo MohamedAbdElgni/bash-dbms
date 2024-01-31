@@ -4,10 +4,7 @@ usrcurrentdir = $1
 trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 function drop_db() {
 
-    # List all databases
-    clear
-    list_dbs
-
+    
     while true
     do
         read -p "Enter DataBase Name To Be Deleted: " dd_name
@@ -49,7 +46,7 @@ function drop_db() {
 }
 
 list_dbs() {
-    
+    emptyflag=false
     dbs=( $(ls -F ../.db | grep "/" | tr / " ") )
 
     # Check if the array is empty
@@ -61,15 +58,30 @@ list_dbs() {
             echo $'\360\237\222\276' "$db_name"
             echo ""
         else 
-            echo "No databases found" $'\360\237\222\277'
-            break
+            echo "No databases fddound" $'\360\237\222\277'
+            
+            emptyflag=true
+            
+            return 0
+            
         fi
     done
 
     
 }
+# List all databases
+clear
+list_dbs
+if [ "$emptyflag" = true ]; then
+    . run.sh $usrcurrentdir
+    return 0
+    else
+        drop_db
 
-drop_db
+fi
+
+
+
 
 
 

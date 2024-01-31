@@ -22,14 +22,13 @@ function get_table_name(){
 }
 
 function get_tname(){
-    
+    # dis t names
     tables_arr=()
 
     for table in *; do
 
         if [ -d "${table}" ]; then
             clear
-            
             echo "📄 ${table}"
             echo ""
             tables_arr+=($table)

@@ -33,7 +33,7 @@ do
             
             . create_db.sh $usrcurrentdir
         
-            return 0
+            break
 
         ;;
         # list database block #
@@ -41,19 +41,19 @@ do
             clear
             . list_dbs.sh $usrcurrentdir
             
-            return 0
+            break
             
         ;;
         # connect database block #
         "Connect-DataBase" )
             
             . con_db.sh $usrcurrentdir
-            return 0
+            break 
         ;;
         # drop database block #
         "Drop-DataBase" )
             . drop_db.sh $usrcurrentdir
-            return 0
+            break 
         ;;
         # exit block
         "Exit" )

@@ -51,13 +51,14 @@ do
             break
         ;;
         "Insert-Into-Table" )
-        
+
             . ../../main/tb_insert.sh $currdb $usrcurrentdir
             break
         ;;
         "Select-From-Table" )
-            echo "Select-From-Table selected"
-            # call for select from table script to be implemented
+            
+            . ../../main/tb_select.sh $currdb $usrcurrentdir
+            break
         ;;
         "Delete-From-Table" )
             . ../../main/tb_f_delete.sh $currdb $usrcurrentdir

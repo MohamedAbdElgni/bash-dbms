@@ -11,7 +11,8 @@ trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 clear
 
 function get_tname(){
-    
+    # dis t names
+    emptyflag=false
     tables_arr=()
     
     for table in *; do
@@ -25,6 +26,7 @@ function get_tname(){
             return 0
         else 
             echo "No tables found"
+            emptyflag=true
             break
         fi
 
@@ -37,7 +39,7 @@ table_name=""
 function get_table_name(){
     clear
     echo "--${currdb} database available tables--"
-    get_tname
+    
     echo "Enter table to delete from"
     echo "=========================="
     while true
@@ -51,7 +53,7 @@ function get_table_name(){
     done
 }
 
-col_names=()
+
 
 function get_table_meta(){
     col_names=($(awk -F "|" 'NR==1 {for(i=1;i<=NF;i++) print $i}' "$table_name/meta"))
@@ -150,8 +152,15 @@ function delete_from_table(){
     delete_value
     return 0
 }
-
+if [ "$emptyflag" = true ]; then
+    echo "No tables found"
+    echo "Please create a table first."
+    . ../../main/c_db_menu.sh $currdb $usrcurrentdir
+    return 0
+else
+get_tname
 delete_from_table
+fi
 
 return 0
 
