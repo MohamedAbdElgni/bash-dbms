@@ -10,6 +10,7 @@ clear
 
 function get_table_name(){
     while true
+        echo "--Enter table nAme to insert into--"
     do
         read -p "Enter table name: " table_name
         if [[ " ${tables_arr[@]} " =~ " ${table_name} " ]]; then
@@ -49,7 +50,9 @@ function get_data_for_table(){
     dts=($(awk -F "|" 'NR==2 {for(i=1;i<=NF;i++) print $i}' "$table_name/meta"))
     pk_status=($(awk -F "|" 'NR==3 {for(i=1;i<=NF;i++) print $i}' "$table_name/meta"))
     old_data=($(awk -F "|" 'NR>1 {for(i=1;i<=NF;i++) print $i}' "$table_name/data"))
-
+    clear
+    echo "Enter data for table ${table_name}"
+    echo "=================================="
     for (( i = 0; i < ${#col_names[@]}; i++ )); do
         # get the column name
         col_name=${col_names[$i]}

@@ -13,11 +13,11 @@ clear
 function get_tname(){
     
     tables_arr=()
-
+    
     for table in *; do
 
         if [ -d "${table}" ]; then
-            clear
+            
             
             echo "📄 ${table}"
             echo ""
@@ -35,7 +35,11 @@ function get_tname(){
 table_name=""
 
 function get_table_name(){
+    clear
+    echo "--${currdb} database available tables--"
     get_tname
+    echo "Enter table to delete from"
+    echo "=========================="
     while true
     do
         read -p "Enter table name: " table_name
@@ -83,39 +87,55 @@ function select_col(){
 
 s_d_col_value=""
 function delete_value(){
-
+        clear
+        echo "clo ${s_col_name} selected of table ${table_name} from ${currdb} database"
+        echo "============================================================================"
     while true
     do
         read -p "Enter value for ${s_col_name} with data type ${dts[co_indx]}: " s_d_col_value
         case ${dts[co_indx]} in
             "int" )
                 if [[ $s_col_value =~ ^[0-9]*$ ]]; then
-                    
-                    awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_d_col_value="$s_d_col_value" 'NR==1 || (NR>1 && $col_idx_awk!=s_d_col_value)' "$table_name/data" > "$table_name/data.tmp" && mv -f "$table_name/data.tmp" "$table_name/data"
-                    clear
-                    echo "row deleted successfully"
+                    awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_d_col_value="$s_d_col_value" 'NR==1 || (NR>1 && $col_idx_awk!=s_d_col_value)' "$table_name/data" > "$table_name/data.tmp"
+                    if [[ $(diff "$table_name/data" "$table_name/data.tmp" | wc -l) -gt 0 ]]; then
+                        clear
+                        mv -f "$table_name/data.tmp" "$table_name/data"
+                        echo "Row deleted successfully"
+                    else
+                        clear
+                        mv -f "$table_name/data.tmp" "$table_name/data"
+                        echo "No matching rows found"
+                    fi
+
                     cd ../../main
                     . c_db_menu.sh $currdb $usrcurrentdir
                     return 0
-                    
                 else
                     echo "Invalid data type"
                 fi
-            ;;
+                ;;
             "str" )
                 if [[ $s_d_col_value =~ ^[a-zA-Z]+$ ]]; then
-                    awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_d_col_value="$s_d_col_value" 'NR==1 || (NR>1 && $col_idx_awk!=s_d_col_value)' "$table_name/data" > "$table_name/data.tmp" && mv -f "$table_name/data.tmp" "$table_name/data"
-                    clear
-                    echo "row deleted successfully"
-                    cd ../../main
+                    awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_d_col_value="$s_d_col_value" 'NR==1 || (NR>1 && $col_idx_awk!=s_d_col_value)' "$table_name/data" > "$table_name/data.tmp"
+
                     
+                    if [[ $(diff "$table_name/data" "$table_name/data.tmp" | wc -l) -gt 0 ]]; then
+                        clear
+                        mv -f "$table_name/data.tmp" "$table_name/data"
+                        echo "Row deleted successfully"
+                    else
+                        clear
+                        mv -f "$table_name/data.tmp" "$table_name/data"
+                        echo "No matching rows found"
+                    fi
+
+                    cd ../../main
                     . c_db_menu.sh $currdb $usrcurrentdir
                     return 0
-                    
                 else
                     echo "Invalid data type"
                 fi
-            ;;
+                ;;
         esac
     done
 
@@ -123,6 +143,8 @@ function delete_value(){
 
 function delete_from_table(){
     get_table_name
+    clear
+    echo "${table_name} table selected from ${currdb} database"
     get_table_meta
     select_col
     delete_value
