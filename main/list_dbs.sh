@@ -9,7 +9,6 @@ list_dbs() {
     # Check if the array is empty
     for db in ../.db/*; do
         if [ -d "${db}" ]; then
-            # extract the database name from the path with sed or awk
             db_name=$(echo "$db" | sed 's/.*\///')
             echo ""
             echo $'\360\237\222\276' "$db_name"

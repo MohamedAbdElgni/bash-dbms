@@ -14,7 +14,7 @@ usrcurrentdir=$2
 currdb=$1
 
 trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
-# if pwd ends with main then we are in the main dir we will cd to .db/$currdb
+
 if [[ $PWD == *"main" ]]; then
     cd ../.db/$currdb
 fi

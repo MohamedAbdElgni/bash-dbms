@@ -9,7 +9,7 @@ trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 # col_name
 # data_type
 # pk or not (pk will be 1 and not pk will be 0)
-# the file rill be sperated by : between each col
+# the file rill be sperated by | between each col
 let num_cols=0
 let got_pk_flag=0
 data_type=""
