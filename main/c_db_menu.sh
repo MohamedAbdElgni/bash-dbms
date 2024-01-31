@@ -2,11 +2,11 @@
 shopt -s extglob
 
 ##### important notes #####
-##### all the scripts related with the secound menu will start with c_db_ prefix #####
+##### all the scripts related with the secound menu will start with c_db_  #####
 ##### c_ for connect ##### <----------=-=-=-
 ##### this script will be called from con_db.sh ##### <----------=-=-=-=
-##### and the tables scripts will start with tb_ prefix #####
-##this var for the selected db name will be passed to c_db_menu.sh as a first argument##
+##### and the tables scripts will start with tb_  #####
+
 
 
 
