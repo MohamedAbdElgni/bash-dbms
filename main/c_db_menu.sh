@@ -59,8 +59,8 @@ do
             # call for select from table script to be implemented
         ;;
         "Delete-From-Table" )
-            echo "Delete-From-Table selected"
-            # call for delete from table script to be implemented
+            . ../../main/tb_f_delete.sh $currdb $usrcurrentdir
+            break
         ;;
         "Update-Table" )
             echo "Update-Table selected"
@@ -69,7 +69,6 @@ do
         "Back-to-Main-menu" )
             echo "Back-to-Main menu "
             clear
-            # redirect to main dir
             cd ../../main
             . run.sh $usrcurrentdir
             break
