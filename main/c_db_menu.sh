@@ -66,7 +66,7 @@ do
         ;;
         "Update-Table" )
             echo "Update-Table selected"
-            # call for update table script to be implemented
+            . ../../main/tb_update.sh $currdb $usrcurrentdir
         ;;
         "Back-to-Main-menu" )
             echo "Back-to-Main menu "
