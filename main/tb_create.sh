@@ -79,7 +79,7 @@ function ask_col_name(){
                 echo "==========================="
                 continue ;;
             
-            *[a-zA-Z_]*[a-zA-Z_] | [a-zA-Z_]) 
+            [A-Za-z_][A-Za-z0-9_]* ) 
             # check if exists in the col_names array
                 if [[ " ${col_names[@]} " =~ " ${col_name} " ]]; then
                     echo "Col name already exists ❌"
@@ -194,7 +194,7 @@ function create_table(){
                 
                 continue ;;
             
-            *[a-zA-Z_]*[a-zA-Z_] | [a-zA-Z_]) 
+            [A-Za-z_][A-Za-z0-9_]* ) 
                 if [ -d "$table_name" ]; then 
                     echo "Table already exists ❌"
                     echo "==========================="

@@ -18,7 +18,7 @@ function get_tname(){
         if [ -d "${table}" ]; then
 
             tables_arr+=($table)
-            return 0
+            
         else 
             
             emptyflag=true
@@ -207,10 +207,8 @@ else
         echo "--${currdb} database available tables--"
         echo ""
         for table in ${tables_arr[@]}; do
-            if [ -d "${table}" ]; then
-                echo "📄 ${table}"
-                echo ""
-            fi
+            echo "📄 ${table}"
+            echo ""
         done
     get_table_name
     clear

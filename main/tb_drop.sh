@@ -26,7 +26,7 @@ function drop_table() {
         read -p "Enter Table Name to drop it: " tb_name
 
         case $tb_name in
-            [A-Za-z_]*[A-Za-z0-9_]* )
+            [A-Za-z_][A-Za-z0-9_]* )
                 
                 if [ -d "$tb_name" ]; then
                 read -p "Are you sure you want to drop this table? (y/n) " answer

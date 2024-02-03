@@ -19,7 +19,7 @@ do
             echo "Sorry, the name can't start with integers ❌"
             echo "==========================="
             continue ;;
-        [A-Za-z_]*[A-Za-z0-9_]* ) 
+        [A-Za-z_][A-Za-z0-9_]* ) 
             if [ -d "../.db/$db_name" ]; then  
                 echo "This DB name already exists ❌"
                 continue
