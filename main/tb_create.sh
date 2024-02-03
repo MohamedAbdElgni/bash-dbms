@@ -218,6 +218,7 @@ function create_table(){
                     touch "$table_name/meta"
 
                     # insert the col names in the meta file
+                    
                     echo "${col_names[*]}" >>"$table_name/data"
                     echo "${col_names[*]}" >> "$table_name/meta"
                     echo "${data_types[*]}" >> "$table_name/meta"
