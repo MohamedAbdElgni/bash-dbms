@@ -18,12 +18,7 @@ function get_tname(){
     for table in *; do
 
         if [ -d "${table}" ]; then
-            
-            
-            echo "📄 ${table}"
-            echo ""
             tables_arr+=($table)
-            return 0
         else 
             echo "No tables found"
             emptyflag=true
@@ -37,19 +32,26 @@ function get_tname(){
 table_name=""
 
 function get_table_name(){
-    clear
+    for table in *; do
+
+        if [ -d "${table}" ]; then
+            echo "📄 ${table}"
+            echo ""
+        fi
+    done
+
     echo "--${currdb} database available tables--"
-    
-    echo "Enter table to delete from"
     echo "=========================="
     while true
     do
+        ##echo "${tables_arr[@]}"
         read -p "Enter table name: " table_name
-        if [[ " ${tables_arr[@]} " =~ " ${table_name} " ]]; then
-            return 0
-        else
-            echo "Table not found"
-        fi
+        for table in "${tables_arr[@]}"; do
+            if [ $table = $table_name ]; then
+                return 0
+               break
+            fi
+        done
     done
 }
 
@@ -144,6 +146,7 @@ function delete_value(){
 }
 
 function delete_from_table(){
+
     get_table_name
     clear
     echo "${table_name} table selected from ${currdb} database"

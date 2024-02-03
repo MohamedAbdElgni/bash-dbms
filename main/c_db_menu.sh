@@ -19,7 +19,7 @@ if [[ $PWD == *"main" ]]; then
     cd ../.db/$currdb
 fi
 
-#echo $locdb
+
 
 function c_db_menu(){
 
@@ -67,6 +67,7 @@ do
         "Update-Table" )
             echo "Update-Table selected"
             . ../../main/tb_update.sh $currdb $usrcurrentdir
+            break
         ;;
         "Back-to-Main-menu" )
             echo "Back-to-Main menu "

@@ -3,7 +3,7 @@ shopt -s extglob
 currdb=$1
 usrcurrentdir=$2
 done_flag=0
-pk_flag=true
+pk_flag=false
 new_data=()
 trap 'cd "$usrcurrentdir"; return' SIGINT SIGTERM
 clear
@@ -24,11 +24,12 @@ function get_table_name(){
 function get_tname(){
     # dis t names
     tables_arr=()
+    clear
 
     for table in *; do
 
         if [ -d "${table}" ]; then
-            clear
+            
             echo "📄 ${table}"
             echo ""
             tables_arr+=($table)
@@ -79,46 +80,44 @@ function get_data_for_table(){
     done
 }
 
-function check_pk(){
-pk_col=0
-for (( i = 0; i < ${#pk_status[@]}; i++ )); do
-    if [[ ${pk_status[$i]} == 1 ]]; then
-        pk_col=$i
+function check_pk() {
+    pk_col=0
+    pk_exists=false
+
+    for ((i = 0; i < ${#pk_status[@]}; i++)); do
+        if [[ ${pk_status[$i]} == 1 ]]; then
+            pk_col=$i
+            pk_flag=true
+            break  
+        fi
+    done
+
+    pk_col_for_awk=$((pk_col + 1))
+    pk_value=${new_data[$pk_col]}
+
+    if [[ "$pk_flag" == true ]]; then
+        pk_exists=$(awk -F "|" -v pk_col_for_awk="$pk_col_for_awk" -v pk_value="$pk_value" 'NR>1 {if($pk_col_for_awk == pk_value) {print "true"; exit}}' "$table_name/data")
+
+        if [[ "$pk_exists" == "true" ]]; then
+            echo "col ${col_names[$pk_col]} with value ${pk_value} already exists"
+            echo "==========================="
+            echo "Press any key to return to the db menu"
+            read -n 1
+            clear
+            cd ../../main
+            . c_db_menu.sh "$currdb" "$usrcurrentdir"
+            return 0
+        fi
     fi
-done
-pk_col_for_awk=$(($pk_col+1))
 
-
-pk_value=${new_data[$pk_col]}
-# the big awk command
-pk_exists=$(awk -F "|" -v pk_col="$pk_col_for_awk" -v pk_value="$pk_value" 'NR>1 {if(tolower($pk_col) == tolower(pk_value)) {print "true"; exit}}' "$table_name/data")
-
-
-pk_col_dt=${dts[$pk_col]}
-
-
-
-if [[ $pk_exists == "true" ]]; then
-    echo "col ${col_names[$pk_col]} with value ${pk_value} already exists"
-    echo "==========================="
-    echo "press any key to back to the db menu"
-    read -n 1
+    echo "${new_data[*]}" | tr ' ' '|' >>"$table_name/data"
     clear
+    echo "Record inserted successfully. 👍"
     cd ../../main
-    . c_db_menu.sh $currdb $usrcurrentdir
+    . c_db_menu.sh "$currdb" "$usrcurrentdir"
     return 0
-
-    
-else
-    echo "${new_data[*]}" | tr ' ' '|' >> "$table_name/data"
-    clear
-    echo "Record inserted successfully." "👍"
-    cd ../../main
-    . c_db_menu.sh $currdb $usrcurrentdir
-    return 0
-fi
-
 }
+
 
 get_tname
 

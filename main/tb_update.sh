@@ -37,7 +37,15 @@ table_name=""
 function get_table_name(){
     clear
     echo "--${currdb} database available tables--"
-    
+    get_tname
+    if [ "$emptyflag" = true ]; then
+        clear
+        echo "No tables found"
+        cd ../../main
+        . c_db_menu.sh $currdb $usrcurrentdir
+        return 0
+
+    fi
     echo "Enter table to update its data"
     echo "=========================="
     while true
@@ -136,32 +144,58 @@ function update_data(){
     echo "============================================================================"
     echo "Original value: ${s_o_col_val}"
     echo "New value: ${s_n_col_val}"
-    echo "=========================="
-    echo "Updating..."
-    echo "=========================="
-    # update data
-    awk -v s_o_col_val="$s_o_col_val" -v s_n_col_val="$s_n_col_val" -v col_idx_awk="$col_idx_awk" 'BEGIN{FS=OFS="|"} {if($col_idx_awk == s_o_col_val) $col_idx_awk=s_n_col_val; print $0}' "$table_name/data" > "$table_name/data.tmp" && mv "$table_name/data.tmp" "$table_name/data"
-    echo "Updated successfully"
-    echo "=========================="
-    echo "Updated data"
-    echo "=========================="
-    cat "$table_name/data"
-    echo "=========================="
-    echo "Press any key to continue..."
-    read -n 1
-}
+    awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_o_col_val="$s_o_col_val" -v s_n_col_val="$s_n_col_val" 'BEGIN {OFS=FS} (NR>1 && $col_idx_awk==s_o_col_val) {$col_idx_awk=s_n_col_val} {print}' "$table_name/data" > "$table_name/data.tmp"
+    sed -i "1s/.*/$(head -n 1 "$table_name/meta")/" "$table_name/data.tmp"
+    if [[ $(diff "$table_name/data" "$table_name/data.tmp" | wc -l) -gt 0 ]]; then
+        
+        if [[ ${pk_status[$co_indx]} = "1" ]]; then
+            if [[ $(awk -F "|" -v col_idx_awk="$col_idx_awk" -v s_n_col_val="$s_n_col_val" 'NR>1 {if($col_idx_awk==s_n_col_val) print $col_idx_awk}' "$table_name/data.tmp" | wc -l) -gt 1 ]]; then
+                clear
+                echo "Col ${s_col_name} is a Primary key and must be unique"
+                rm -f "$table_name/data.tmp" 2> /dev/null
+                cd ../../main
+                . c_db_menu.sh $currdb $usrcurrentdir
+                return 0
+            fi
 
-function update_table(){
-    get_tname
-    get_table_name
-    get_table_meta
-    select_col
-    select_col_val
-    get_update_col_val
-    update_data
+        fi
+        clear
+        mv -f "$table_name/data.tmp" "$table_name/data"
+        echo "Updated successfully"
+    else
+        clear
+        mv -f "$table_name/data.tmp" "$table_name/data"
+        echo "No matching rows found"
+        cd ../../main
+        . c_db_menu.sh $currdb $usrcurrentdir
+        return 0
+    fi
     cd ../../main
     . c_db_menu.sh $currdb $usrcurrentdir
     return 0
+}
+
+function update_table(){
+    get_table_name
+    clear
+    get_table_meta
+    select_col
+    
+
+    if [[ ${#old_data[@]} -gt 1 ]]; then
+    ##echo "old data: ${old_data[@]}"
+        select_col_val
+        get_update_col_val
+        update_data
+        return 0
+    else
+        clear
+        echo "No rows found"
+        cd ../../main
+        . c_db_menu.sh $currdb $usrcurrentdir
+        return 0
+    fi
+
 }
 
 update_table
