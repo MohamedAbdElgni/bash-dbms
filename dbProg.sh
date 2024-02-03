@@ -2,6 +2,8 @@
 shopt -s extglob
 currdir=$PWD
 
+
+
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 chmod +x *.sh 2> ./error.log

@@ -72,10 +72,10 @@ do
             
             if [ -d "$db_directory" ]; then
                 find "$db_directory" -mindepth 1 -delete
+                clear
                 echo "Database reset successfully."
-                
-                main 
-                    
+                . run.sh $usrcurrentdir
+                break
             else
                 echo "Error: Database directory does not exist."
             fi

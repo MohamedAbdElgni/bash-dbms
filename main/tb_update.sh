@@ -38,6 +38,7 @@ function get_table_name(){
     clear
     echo "--${currdb} database available tables--"
     get_tname
+    get_table_meta
     if [ "$emptyflag" = true ]; then
         clear
         echo "No tables found"
@@ -178,21 +179,16 @@ function update_data(){
 function update_table(){
     get_table_name
     clear
-    get_table_meta
-    select_col
+    
+    
     
 
     if [[ ${#old_data[@]} -gt 1 ]]; then
-    ##echo "old data: ${old_data[@]}"
+    echo "old data: ${old_data[@]}"
+        select_col
         select_col_val
         get_update_col_val
         update_data
-        return 0
-    else
-        clear
-        echo "No rows found"
-        cd ../../main
-        . c_db_menu.sh $currdb $usrcurrentdir
         return 0
     fi
 
