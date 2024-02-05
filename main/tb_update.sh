@@ -38,7 +38,7 @@ function get_table_name(){
     clear
     echo "--${currdb} database available tables--"
     get_tname
-    get_table_meta
+    
     if [ "$emptyflag" = true ]; then
         clear
         echo "No tables found"
@@ -47,12 +47,15 @@ function get_table_name(){
         return 0
 
     fi
+    
     echo "Enter table to update its data"
     echo "=========================="
     while true
+    
     do
         read -p "Enter table name: " table_name
         if [[ " ${tables_arr[@]} " =~ " ${table_name} " ]]; then
+            get_table_meta
             return 0
         else
             echo "Table not found"
@@ -60,7 +63,7 @@ function get_table_name(){
     done
 }
 
-
+$()
 
 function get_table_meta(){
     col_names=($(awk -F "|" 'NR==1 {for(i=1;i<=NF;i++) print $i}' "$table_name/meta"))
